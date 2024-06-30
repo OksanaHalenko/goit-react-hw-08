@@ -3,10 +3,8 @@ import css from "./RegistrationForm.module.css";
 import { useId } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { register } from "../../redux/auth/operations";
 
-function RegistrationForm() {
+function RegistrationForm({ submit }) {
   const nameId = useId();
   const emailId = useId();
   const passwordId = useId();
@@ -20,10 +18,9 @@ function RegistrationForm() {
       .min(7, "must be at least 7 characters long")
       .required("Required"),
   });
-  const dispatch = useDispatch();
 
   const handleSubmit = ({ name, email, password }, actions) => {
-    dispatch(register({ name, email, password }));
+    submit({ name, email, password });
     actions.resetForm();
   };
 

@@ -3,10 +3,8 @@ import css from "./LoginForm.module.css";
 import { useId } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { login } from "../../redux/auth/operations";
 
-function LoginForm() {
+function LoginForm({ submit }) {
   const emailId = useId();
   const passwordId = useId();
   const loginSchema = Yup.object().shape({
@@ -15,10 +13,9 @@ function LoginForm() {
       .min(6, "must be at least 6 characters long")
       .required("Required"),
   });
-  const dispatch = useDispatch();
 
   const handleSubmit = ({ email, password }, actions) => {
-    dispatch(login({ email, password }));
+    submit({ email, password });
     actions.resetForm();
   };
 

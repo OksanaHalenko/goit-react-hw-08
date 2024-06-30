@@ -15,9 +15,9 @@ export const register = createAsyncThunk(
   "auth/register",
   async (user, thunkAPI) => {
     try {
-      const response = await axios.post("/users/signup", user);
-      setAuthHeader(response.data.token);
-      return response.data;
+      const { data } = await axios.post("/users/signup", user);
+      setAuthHeader(data.token);
+      return data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -25,9 +25,9 @@ export const register = createAsyncThunk(
 );
 export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   try {
-    const response = await axios.post("/users/login", user);
-    setAuthHeader(response.data.token);
-    return response.data;
+    const { data } = await axios.post("/users/login", user);
+    setAuthHeader(data.token);
+    return data;
   } catch (e) {
     return thunkAPI.rejectWithValue(e.message);
   }
@@ -37,7 +37,6 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
     await axios.post("/users/logout");
     clearAuthHeader();
-    return;
   } catch (e) {
     return thunkAPI.rejectWithValue(e.message);
   }
@@ -46,18 +45,21 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const persistedToken = state.auth.token;
-
-    if (persistedToken === null) {
-      return thunkAPI.rejectWithValue("Unable to fetch user");
-    }
-    setAuthHeader(persistedToken);
     try {
-      const response = await axios.get("/users/current");
-      return response.data;
+      const { auth } = thunkAPI.getState();
+      setAuthHeader(auth.token);
+      const { data } = await axios.get("/users/current");
+      return data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { auth } = getState();
+      if (!auth.token) {
+        return false;
+      }
+    },
   }
 );

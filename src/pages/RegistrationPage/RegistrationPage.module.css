@@ -1,0 +1,10 @@
+.wrapper {
+  margin: 24px;
+}
+.title {
+  color: goldenrod;
+}
+.text {
+  font-size: 18px;
+  font-weight: bold;
+}

@@ -4,6 +4,7 @@ import { useId } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
+import { register } from "../../redux/auth/operations";
 
 function RegistrationForm() {
   const nameId = useId();
@@ -16,7 +17,7 @@ function RegistrationForm() {
       .required("Required"),
     email: Yup.string().email("must be a valid email").required("Required"),
     password: Yup.string()
-      .min(6, "must be at least 6 characters long")
+      .min(7, "must be at least 7 characters long")
       .required("Required"),
   });
   const dispatch = useDispatch();

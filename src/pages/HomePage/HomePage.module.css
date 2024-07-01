@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.title {
+  color: brown;
+  font-size: 48px;
+}
+.text {
+  color: goldenrod;
+  font-size: 72px;
+  text-align: center;
+}

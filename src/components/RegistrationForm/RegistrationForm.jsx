@@ -3,11 +3,14 @@ import css from "./RegistrationForm.module.css";
 import { useId } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { register } from "../../redux/auth/operations";
 
-function RegistrationForm({ submit }) {
+function RegistrationForm() {
   const nameId = useId();
   const emailId = useId();
   const passwordId = useId();
+  const dispatch = useDispatch();
   const registerSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, "Too Short!")
@@ -20,7 +23,7 @@ function RegistrationForm({ submit }) {
   });
 
   const handleSubmit = ({ name, email, password }, actions) => {
-    submit({ name, email, password });
+    dispatch(register({ name, email, password }));
     actions.resetForm();
   };
 

@@ -3,10 +3,14 @@ import css from "./LoginForm.module.css";
 import { useId } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/auth/operations";
 
-function LoginForm({ submit }) {
+function LoginForm() {
   const emailId = useId();
   const passwordId = useId();
+  const dispatch = useDispatch();
+
   const loginSchema = Yup.object().shape({
     email: Yup.string().email("must be a valid email").required("Required"),
     password: Yup.string()
@@ -15,7 +19,7 @@ function LoginForm({ submit }) {
   });
 
   const handleSubmit = ({ email, password }, actions) => {
-    submit({ email, password });
+    dispatch(login({ email, password }));
     actions.resetForm();
   };
 
